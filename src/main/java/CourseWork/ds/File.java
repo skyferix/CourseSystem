@@ -10,10 +10,18 @@ public class File {
     private String name;
     private String path;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name="folder_id", referencedColumnName = "id")
     private Folder folder;
 
     public File() {
+    }
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public int getId() {

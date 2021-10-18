@@ -1,6 +1,7 @@
 package CourseWork.ds;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,24 +12,35 @@ public class Folder {
     private String title;
 
     @ManyToOne
+    @JoinColumn(name="parent_course_id", referencedColumnName = "id")
     private Course parentCourse;
 
-    @OneToMany(mappedBy = "parentFolder", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "parentFolder",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
     private List<Folder> subFolders;
 
     @ManyToOne
+    @JoinColumn(name="parent_folder_id", referencedColumnName = "id")
     private Folder parentFolder;
 
-    @OneToMany(mappedBy = "folder", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name="folder_id")
     @OrderBy("id ASC")
     private List<File> folderFiles;
 
     @ManyToMany(mappedBy = "folders", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
-    private List<User> moderators;
+    private List<User> moderators = new ArrayList<>();
 
     public Folder() {
+    }
+
+    public List<User> getModerators() {
+        return moderators;
+    }
+
+    public void setModerators(List<User> moderators) {
+        this.moderators = moderators;
     }
 
     public Folder(String title) {

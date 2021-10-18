@@ -1,6 +1,6 @@
 package CourseWork.fxControllers;
 import CourseWork.ds.*;
-import CourseWork.hibernateControllers.conf;
+import CourseWork.helpers.conf;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -106,7 +106,7 @@ public class Register implements Initializable {
             } else if(checkUserType(UserType.Admin))
                 user = new Admin(sUsername, sPassword);
 
-            conf.userHibControl.createUser(user);
+            conf.hibControl.create(user);
             renderRightForm(event);
             String temp = conf.userHibControl.getUserIdByLogin(sUsername).toString();
             conf.session.put("userId", temp );

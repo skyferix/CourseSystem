@@ -1,6 +1,9 @@
-package CourseWork.hibernateControllers;
+package CourseWork.helpers;
 
 import CourseWork.fxControllers.Login;
+import CourseWork.hibernateControllers.CourseHibControl;
+import CourseWork.hibernateControllers.HibControl;
+import CourseWork.hibernateControllers.UserHibControl;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -13,6 +16,7 @@ public class conf {
     public static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystemMng");
     public static UserHibControl userHibControl = new UserHibControl(entityManagerFactory);
     public static CourseHibControl courseHibControl = new CourseHibControl(entityManagerFactory);
+    public static HibControl hibControl = new HibControl(entityManagerFactory);
 
     //Session
     public static Preferences session = Preferences.userNodeForPackage(Login.class);

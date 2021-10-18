@@ -1,27 +1,24 @@
 package CourseWork;
 
 import CourseWork.ds.*;
-import CourseWork.hibernateControllers.conf;
+import CourseWork.helpers.conf;
+import CourseWork.helpers.dbUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.SimpleTimeZone;
-import java.util.prefs.Preferences;
 
 
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystemMng");
+
         createUser();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("start.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -29,6 +26,17 @@ public class HelloApplication extends Application {
         stage.show();
     }
     public void createUser(){
+//        Admin admin = new Admin("root","root");
+//        Course course = new Course("title","desc", LocalDate.now() ,LocalDate.parse("2011-01-01"),LocalDate.parse("2011-01-01"));
+//        conf.hibControl.create(admin);
+//        conf.hibControl.create(course);
+//        List<Course> courses = List.of(course);
+//        person.setModeratedCourses(courses);
+//        conf.hibControl.edit(person);
+//        Admin admin = new Admin("test","test");
+//        dbUtils.connect();
+//        Admin admin = new Admin("first","second");
+//        conf.userHibControl.createUser(admin);
 //        conf.courseHibControl.createCourse(course);
 //        User user = conf.userHibControl.getUserById(2);
 //        List<Course> courses = new ArrayList<Course>();

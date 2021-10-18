@@ -2,14 +2,10 @@ package CourseWork.ds;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Course {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Course extends Hib {
     private String title;
     private String description;
     private LocalDate createdDate;
@@ -18,13 +14,13 @@ public class Course {
 
     @ManyToMany(mappedBy = "moderatedCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
-    private List<User> courseModerator;
+    private List<User> courseModerators;
 
     @ManyToMany(mappedBy = "enrolledCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
     private List<Person> participants;
 
-    @OneToMany(mappedBy = "parentCourse", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "parentCourse",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
     private List<Folder> courseFolders;
 
@@ -45,14 +41,17 @@ public class Course {
     public Course() {
     }
 
-    public int getId() {
-        return id;
+    public LocalDate getCreatedDate() {
+        return createdDate;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
     }
 
+    public void setParticipants(List<Person> participants) {
+        this.participants = participants;
+    }
     public String getTitle() {
         return title;
     }
@@ -86,11 +85,11 @@ public class Course {
     }
 
     public List<User> getCourseModerator() {
-        return courseModerator;
+        return courseModerators;
     }
 
-    public void setCourseModerator(List<User> courseModerator) {
-        this.courseModerator = courseModerator;
+    public void setCourseModerator(List<User> courseModerators) {
+        this.courseModerators = courseModerators;
     }
 
     public List<Person> getParticipants() {

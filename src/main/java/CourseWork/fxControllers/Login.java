@@ -1,9 +1,7 @@
 package CourseWork.fxControllers;
 
-import CourseWork.HelloApplication;
 import CourseWork.ds.User;
-import CourseWork.hibernateControllers.UserHibControl;
-import CourseWork.hibernateControllers.conf;
+import CourseWork.helpers.conf;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.io.IOException;
-import java.util.prefs.Preferences;
 
 public class Login {
     private Parent root;
@@ -32,7 +27,7 @@ public class Login {
     public void submit(ActionEvent event) {
         String sUsername = username.getText().toString();
         String sPassword = password.getText().toString();
-        User user = conf.userHibControl.getUserByLogin(sUsername,sPassword);
+        User user = conf.userHibControl.getUserByLogin(sUsername, sPassword);
         if(user != null){
             try {
                 System.out.println(getClass().getResource("main.fxml"));

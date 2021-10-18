@@ -1,6 +1,6 @@
 package CourseWork.hibernateControllers;
 
-import CourseWork.Helper;
+import CourseWork.helpers.Helper;
 import CourseWork.ds.User;
 
 import javax.persistence.EntityManager;
@@ -21,67 +21,12 @@ public class UserHibControl {
         return emf.createEntityManager();
     }
 
-    public void createUser(User user) {
-        EntityManager em = null;
-        try {
-            em = getEntityManager();
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
-
     public void addModerators(User user) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.merge(user);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
-
-    public void editUser(User user) {
-        EntityManager em = null;
-        try {
-            em = getEntityManager();
-            em.getTransaction().begin();
-            em.merge(user);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
-
-    public void removeUser(int id) {
-        EntityManager em = null;
-        try {
-            em = getEntityManager();
-            em.getTransaction().begin();
-            User user = null;
-            try {
-                user = em.getReference(User.class, id);
-                user.getId();
-            } catch (Exception e) {
-                System.out.println("No such user by given Id");
-            }
-            em.remove(user);
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,6 +96,7 @@ public class UserHibControl {
         }
         return null;
     }
+
     public Integer getUserIdByLogin(String login){
         EntityManager em = null;
         Object temp = null;

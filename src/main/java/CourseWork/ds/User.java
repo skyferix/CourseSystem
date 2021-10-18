@@ -1,26 +1,33 @@
 package CourseWork.ds;
 
-import CourseWork.Helper;
+import CourseWork.helpers.Helper;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public abstract class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public abstract class User extends Hib {
     private String login;
     private String password;
 
     @Enumerated(EnumType.ORDINAL)
     private UserType userType;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name="course_moderator",
+            joinColumns = @JoinColumn(name="Course_id"),
+            inverseJoinColumns = @JoinColumn(name="Moderator_id")
+    )
     private List<Course> moderatedCourses;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name="folder_user",
+            joinColumns = @JoinColumn(name="folder_id"),
+            inverseJoinColumns = @JoinColumn(name="moderator_id")
+    )
     private List<Folder> folders;
 
     public User(String login, String password, UserType type) {
@@ -33,12 +40,12 @@ public abstract class User {
     public User() {
     }
 
-    public int getId() {
-        return id;
+    public List<Folder> getFolders() {
+        return folders;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setFolders(List<Folder> folders) {
+        this.folders = folders;
     }
 
     public String getLogin() {
@@ -71,13 +78,5 @@ public abstract class User {
 
     public void setModeratedCourses(List<Course> moderatedCourses) {
         this.moderatedCourses =moderatedCourses;
-    }
-
-    public List<Folder> getMyFolders() {
-        return folders;
-    }
-
-    public void setMyFolders(List<Folder> folders) {
-        this.folders = folders;
     }
 }
