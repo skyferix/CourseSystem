@@ -88,16 +88,15 @@ public class Register implements Initializable {
 
         if (sUsername != "") {
             if (conf.userHibControl.checkIfExists(sUsername)) {
-                renderWrongForm(event);
                 sendLoginAlert();
             }
         }
         if (sPassword == "" ||
                 checkUserType(UserType.Person) && (sName == "" || sSurname == "") ||
                 checkUserType(UserType.Company) && (sCompanyName == "" || sRepresentative == "")) {
-            renderWrongForm(event);
             sendEmptyFieldsAlert();
         } else {
+
             User user = null;
             if(checkUserType(UserType.Person)) {
                 user = new Person(sUsername,sPassword,sName,sSurname);
@@ -107,9 +106,10 @@ public class Register implements Initializable {
                 user = new Admin(sUsername, sPassword);
 
             conf.hibControl.create(user);
+            int temp = conf.userHibControl.getUserIdByLogin(sUsername);
+            conf.putUserId(temp);
             renderRightForm(event);
-            String temp = conf.userHibControl.getUserIdByLogin(sUsername).toString();
-            conf.session.put("userId", temp );
+
         }
     }
 
@@ -117,32 +117,31 @@ public class Register implements Initializable {
         return userType.getValue().toString() == type.toString();
     }
 
-    private void renderWrongForm(ActionEvent event){
-        try {
-            root = FXMLLoader.load(getClass().getResource("register.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch(IOException e){
-            e.printStackTrace();
-            System.out.println("fxControllers/Register/submit -> register.fxml");
-        }
-    }
-
     private void renderRightForm(ActionEvent event){
         try {
-            root = FXMLLoader.load(getClass().getResource("main.fxml"));
+            root = FXMLLoader.load(getClass().getResource("courses.fxml"));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         } catch(IOException e){
             e.printStackTrace();
-            System.out.println("fxControllers/Register/submit -> main.fxml");
+            System.out.println("fxControllers/Register/submit -> courses.fxml");
         }
     }
 
+    public void goBack(ActionEvent event){
+        try {
+            root = FXMLLoader.load(getClass().getResource("/CourseWork/start.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch(IOException e){
+            e.printStackTrace();
+            System.out.println("fxControllers/Register/submit -> start.fxml");
+        }
+    }
     private void sendLoginAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Warning");

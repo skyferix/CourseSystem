@@ -6,14 +6,24 @@ import java.util.List;
 
 @Entity
 public class Course extends Hib {
+    @Column(unique = true)
     private String title;
     private String description;
     private LocalDate createdDate;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @ManyToMany(mappedBy = "moderatedCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @OrderBy("id ASC")
+    @ManyToOne
+    @JoinColumn(name="owner_id", referencedColumnName = "id")
+    private Person owner;
+
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name="course_moderator",
+            joinColumns = @JoinColumn(name="Course_id"),
+            inverseJoinColumns = @JoinColumn(name="Moderator_id")
+    )
     private List<User> courseModerators;
 
     @ManyToMany(mappedBy = "enrolledCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -31,11 +41,13 @@ public class Course extends Hib {
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
-    public Course(String title, LocalDate startDate, LocalDate endDate) {
+    public Course(String title, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate, Person owner) {
         this.title = title;
+        this.description = description;
+        this.createdDate = createdDate;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.owner = owner;
     }
 
     public Course() {
@@ -52,6 +64,7 @@ public class Course extends Hib {
     public void setParticipants(List<Person> participants) {
         this.participants = participants;
     }
+
     public String getTitle() {
         return title;
     }
@@ -106,5 +119,25 @@ public class Course extends Hib {
 
     public void setCourseFolders(List<Folder> courseFolders) {
         this.courseFolders = courseFolders;
+    }
+
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
+    }
+
+    public List<User> getCourseModerators() {
+        return courseModerators;
+    }
+
+    public void setCourseModerators(List<User> courseModerators) {
+        this.courseModerators = courseModerators;
+    }
+
+    public void addParticipant(Person person){
+        this.participants.add(person);
     }
 }

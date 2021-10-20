@@ -8,25 +8,22 @@ import java.util.List;
 
 @Entity
 public abstract class User extends Hib {
+    @Column(unique = true)
     private String login;
     private String password;
 
     @Enumerated(EnumType.ORDINAL)
     private UserType userType;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name="course_moderator",
-            joinColumns = @JoinColumn(name="Course_id"),
-            inverseJoinColumns = @JoinColumn(name="Moderator_id")
-    )
+    @ManyToMany(mappedBy = "courseModerators", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OrderBy("id ASC")
     private List<Course> moderatedCourses;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name="folder_user",
             joinColumns = @JoinColumn(name="folder_id"),
-            inverseJoinColumns = @JoinColumn(name="moderator_id")
+            inverseJoinColumns = @JoinColumn(name="user_id")
     )
     private List<Folder> folders;
 

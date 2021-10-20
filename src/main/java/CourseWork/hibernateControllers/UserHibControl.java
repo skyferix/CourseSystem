@@ -1,13 +1,18 @@
 package CourseWork.hibernateControllers;
 
+import CourseWork.ds.UserType;
 import CourseWork.helpers.Helper;
 import CourseWork.ds.User;
+import CourseWork.helpers.dbUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.sql.Connection;
 import java.util.List;
 
 public class UserHibControl {
@@ -21,22 +26,6 @@ public class UserHibControl {
         return emf.createEntityManager();
     }
 
-    public void addModerators(User user) {
-        EntityManager em = null;
-        try {
-            em = getEntityManager();
-            em.getTransaction().begin();
-            em.merge(user);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
-
     public List<User> getAllUsers() {
         return getAllUsers(false, -1, -1);
     }
@@ -44,7 +33,7 @@ public class UserHibControl {
     public List<User> getAllUsers(boolean all, int resMax, int resFirst) {
         EntityManager em = getEntityManager();
         try {
-            CriteriaQuery query = em.getCriteriaBuilder().createQuery();
+            CriteriaQuery<Object> query = em.getCriteriaBuilder().createQuery();
             query.select(query.from(User.class));
             Query q = em.createQuery(query);
 
@@ -127,5 +116,29 @@ public class UserHibControl {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public List<User> getUsersByType(UserType type) {
+        Query query = null;
+        try {
+            EntityManager em = getEntityManager();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<User> cr = cb.createQuery(User.class);
+            Root<User> root = cr.from(User.class);
+            cr.select(root).where(cb.equal(root.get("userType"), type));
+            query = em.createQuery(cr);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return query.getResultList();
+    }
+
+    public UserType getUserType(int id){
+        EntityManager em = getEntityManager();
+        Object temp = em.createNativeQuery("SELECT DTYPE FROM user u WHERE u.id = :id")
+                .setParameter("id", id)
+                .getSingleResult();
+        UserType rez = UserType.valueOf(temp.toString());
+        return rez;
     }
 }

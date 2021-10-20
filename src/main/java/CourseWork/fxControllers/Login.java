@@ -30,14 +30,13 @@ public class Login {
         User user = conf.userHibControl.getUserByLogin(sUsername, sPassword);
         if(user != null){
             try {
-                System.out.println(getClass().getResource("main.fxml"));
-                root = FXMLLoader.load(getClass().getResource("main.fxml"));
+                int temp = conf.userHibControl.getUserIdByLogin(sUsername);
+                conf.putUserId(temp);
+                root = FXMLLoader.load(getClass().getResource("courses.fxml"));
                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
-                String temp = conf.userHibControl.getUserIdByLogin(sUsername).toString();
-                conf.session.put("userId", temp );
             } catch(IOException e){
                 e.printStackTrace();
                 System.out.println("fxControllers/Login/submit -> main");
@@ -52,9 +51,19 @@ public class Login {
             } catch(IOException e){
                 e.printStackTrace();
                 System.out.println("fxControllers/Login/submit -> wrong-login");
-
             }
         }
-
+    }
+    public void goBack(ActionEvent event){
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/CourseWork/start.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 }

@@ -16,6 +16,9 @@ public class Person extends User {
     )
     private List<Course> enrolledCourses;
 
+    @OneToMany(mappedBy ="owner",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Course> ownedCourses;
+
     public Person() {
 
     }
@@ -63,5 +66,20 @@ public class Person extends User {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public List<Course> getOwnedCourses() {
+        return ownedCourses;
+    }
+
+    public void setOwnedCourses(List<Course> ownedCourses) {
+        this.ownedCourses = ownedCourses;
+    }
+
+    public void addEnrolledCourse(Course course){
+        this.getEnrolledCourses().add(course);
+    }
+    public void removeEnrolledCourse(Course course){
+        this.getEnrolledCourses().removeIf(item -> item.getTitle().equals(course.getTitle()));
     }
 }
