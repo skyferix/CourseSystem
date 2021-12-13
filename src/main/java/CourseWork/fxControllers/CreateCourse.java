@@ -1,9 +1,6 @@
 package CourseWork.fxControllers;
 
-import CourseWork.ds.Course;
-import CourseWork.ds.Person;
-import CourseWork.ds.User;
-import CourseWork.ds.UserType;
+import CourseWork.ds.*;
 import CourseWork.helpers.conf;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -90,7 +87,11 @@ public class CreateCourse implements Initializable {
             conf.hibControl.create(course);
             users.stream().filter(user->user.getId()==userId).findFirst().ifPresent(users::remove);
             course.setCourseModerators(users);
+            Folder folder = new Folder("ROOT");
+            conf.hibControl.create(folder);
+            course.setMainFolder(folder);
             conf.hibControl.edit(course);
+
             goBack(event);
         } else {
             showAlert();

@@ -110,10 +110,8 @@ public class UserHibControl {
             Object temp = em.createNativeQuery("SELECT id FROM user u WHERE u.login = :login")
                     .setParameter("login", login)
                     .getSingleResult();
-        } catch (NoResultException e) {
-            return false;
         } catch (Exception e){
-            e.printStackTrace();
+            return false;
         }
         return true;
     }

@@ -101,7 +101,7 @@ public class EditCourse {
             Person person = conf.personHibControl.getPersonById(userId);
             Course course = conf.courseHibControl.getCourseByTitle(sTitle);
             List<String> test = moderators.getSelectionModel().getSelectedItems();
-            List<User> users = new ArrayList<>();
+            List<User> users = new ArrayList<User>();
             List<Person> temp = null;
             for (String s: test) {
                 try {
@@ -110,6 +110,7 @@ public class EditCourse {
                         users.add((User) p);
                     }
                 } catch (Exception e) {
+
                     e.printStackTrace();
                 }
             }

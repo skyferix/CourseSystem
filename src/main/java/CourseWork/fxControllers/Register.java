@@ -89,28 +89,29 @@ public class Register implements Initializable {
         if (sUsername != "") {
             if (conf.userHibControl.checkIfExists(sUsername)) {
                 sendLoginAlert();
+                return;
             }
         }
         if (sPassword == "" ||
                 checkUserType(UserType.Person) && (sName == "" || sSurname == "") ||
                 checkUserType(UserType.Company) && (sCompanyName == "" || sRepresentative == "")) {
             sendEmptyFieldsAlert();
-        } else {
-
-            User user = null;
-            if(checkUserType(UserType.Person)) {
-                user = new Person(sUsername,sPassword,sName,sSurname);
-            } else if(checkUserType(UserType.Company)) {
-                user = new Company(sUsername,sPassword,sCompanyName,sRepresentative);
-            } else if(checkUserType(UserType.Admin))
-                user = new Admin(sUsername, sPassword);
-
-            conf.hibControl.create(user);
-            int temp = conf.userHibControl.getUserIdByLogin(sUsername);
-            conf.putUserId(temp);
-            renderRightForm(event);
-
+            return;
         }
+
+        User user = null;
+        if(checkUserType(UserType.Person)) {
+            user = new Person(sUsername,sPassword,sName,sSurname);
+        } else if(checkUserType(UserType.Company)) {
+            user = new Company(sUsername,sPassword,sCompanyName,sRepresentative);
+        } else if(checkUserType(UserType.Admin))
+            user = new Admin(sUsername, sPassword);
+
+        conf.hibControl.create(user);
+        int temp = conf.userHibControl.getUserIdByLogin(sUsername);
+        conf.putUserId(temp);
+        renderRightForm(event);
+
     }
 
     private boolean checkUserType(UserType type) {

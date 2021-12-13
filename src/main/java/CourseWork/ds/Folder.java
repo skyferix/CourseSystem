@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Folder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Folder extends Hib {
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name="parent_course_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "mainFolder")
     private Course parentCourse;
 
     @OneToMany(mappedBy = "parentFolder",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -26,11 +22,13 @@ public class Folder {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name="folder_id")
     @OrderBy("id ASC")
-    private List<File> folderFiles;
+    private List<File> files;
 
     @ManyToMany(mappedBy = "folders", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
     private List<User> moderators = new ArrayList<>();
+
+    private String description;
 
     public Folder() {
     }
@@ -45,14 +43,6 @@ public class Folder {
 
     public Folder(String title) {
         this.title = title;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -87,12 +77,12 @@ public class Folder {
         this.parentFolder = parentFolder;
     }
 
-    public List<File> getFolderFiles() {
-        return folderFiles;
+    public List<File> getFiles() {
+        return files;
     }
 
-    public void setFolderFiles(List<File> folderFiles) {
-        this.folderFiles = folderFiles;
+    public void setFiles(List<File> files) {
+        this.files = files;
     }
 
     public List<User> getEditors() {
@@ -101,5 +91,18 @@ public class Folder {
 
     public void setEditors(List<User> moderators) {
         this.moderators = moderators;
+    }
+
+    @Override
+    public String toString(){
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

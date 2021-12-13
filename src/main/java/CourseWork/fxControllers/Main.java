@@ -2,6 +2,7 @@ package CourseWork.fxControllers;
 
 import CourseWork.ds.Course;
 import CourseWork.ds.Person;
+import CourseWork.ds.User;
 import CourseWork.ds.UserType;
 import CourseWork.helpers.conf;
 import CourseWork.view.CourseView;
@@ -75,6 +76,22 @@ public class Main implements Initializable {
     @FXML
     public Tab adminTab;
 
+    //third
+    @FXML
+    public ListView<String> myList1;
+    @FXML
+    public Text myTitle1;
+    @FXML
+    public TextField myStartDate1;
+    @FXML
+    public TextField myEndDate1;
+    @FXML
+    public TextField myDescription1;
+    @FXML
+    public AnchorPane myCourseDetails1;
+    @FXML
+    public Tab myCourseTab1;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if(conf.userHibControl.getUserType(conf.getUserId())==UserType.Admin){
@@ -102,10 +119,19 @@ public class Main implements Initializable {
                 courseDetails.setVisible(true);
 
                 int userId = Integer.parseInt(conf.session.get("userId","none"));
-                UserType type = conf.userHibControl.getUserById(userId).getUserType();
+                User user = conf.userHibControl.getUserById(userId);
                 participate.setVisible(false);
                 revokeParticipate.setVisible(false);
-                if(type == UserType.Person) {
+
+                if(user.getUserType() == UserType.Person) {
+                    Person person = (Person) user;
+                    List<Course> courses = person.getOwnedCourses();
+
+                    for(Course c: courses){
+                        if(c.getId() == course.getId()){
+                            return;
+                        }
+                    }
                     if (conf.courseHibControl.checkIfParticipant(course.getId(), userId)) {
                         revokeParticipate.setVisible(true);
                     } else {
@@ -128,6 +154,23 @@ public class Main implements Initializable {
                 myEndDate.setText(course.getEndDate().toString());
                 myDescription.setText(course.getDescription());
                 myCourseDetails.setVisible(true);
+            }
+        });
+
+        List<Course> moderatedCourses = conf.userHibControl.getUserById(conf.getUserId()).getModeratedCourses();
+        System.out.println(moderatedCourses);
+        myList1.getItems().addAll(getCourseNames(moderatedCourses));
+        myList1.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                String currentItem = myList1.getSelectionModel().getSelectedItem();
+                Course course = conf.courseHibControl.getCourseByTitle(currentItem);
+                myTitle1.setText(course.getTitle());
+                myStartDate1.setText(course.getStartDate().toString());
+                myEndDate1.setText(course.getEndDate().toString());
+                myDescription1.setText(course.getDescription());
+                myCourseDetails1.setVisible(true);
             }
         });
 
@@ -212,6 +255,43 @@ public class Main implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void goModerate(ActionEvent event){
+        Parent root = null;
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        String currentItem = myList.getSelectionModel().getSelectedItem();
+        Course course = conf.courseHibControl.getCourseByTitle(currentItem);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("moderate-course.fxml"));
+            root = loader.load();
+            ModerateCourseFxml editCourse = loader.getController();
+            editCourse.getAllDone(course);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void goModerate1(ActionEvent event){
+        Parent root = null;
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        String currentItem = myList1.getSelectionModel().getSelectedItem();
+        Course course = conf.courseHibControl.getCourseByTitle(currentItem);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("moderate-course.fxml"));
+            root = loader.load();
+            ModerateCourseFxml editCourse = loader.getController();
+            editCourse.getAllDone(course);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

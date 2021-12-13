@@ -79,7 +79,12 @@ public class Person extends User {
     public void addEnrolledCourse(Course course){
         this.getEnrolledCourses().add(course);
     }
+
     public void removeEnrolledCourse(Course course){
         this.getEnrolledCourses().removeIf(item -> item.getTitle().equals(course.getTitle()));
     }
+
+
+
+
 }
