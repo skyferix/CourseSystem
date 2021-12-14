@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -87,20 +88,32 @@ public class CreateCourse implements Initializable {
             conf.hibControl.create(course);
             users.stream().filter(user->user.getId()==userId).findFirst().ifPresent(users::remove);
             course.setCourseModerators(users);
-            Folder folder = new Folder("ROOT");
+            Folder folder = new Folder("Course root folder", "Contains all course folders and files");
             conf.hibControl.create(folder);
             course.setMainFolder(folder);
             conf.hibControl.edit(course);
+            java.io.File newFolder = new File(conf.rootFolder.getPath() + "\\course" + course.getId());
+            if(!newFolder.exists()){
+                if(!newFolder.mkdir()){
+                    showAlert("Cannot create course root");
+                    return;
+                }
+            } else {
+                showAlert("Course root exists");
+                return;
+            }
+            folder.setPath(newFolder.getPath());
+            conf.hibControl.edit(folder);
 
             goBack(event);
         } else {
-            showAlert();
+            showAlert("Not all field ar filled in!");
         }
     }
-    private void showAlert(){
+    private void showAlert(String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Warning");
-        alert.setHeaderText("Not all field ar filled in!");
+        alert.setHeaderText(message);
         alert.showAndWait();
     }
 }

@@ -30,7 +30,23 @@ public class Folder extends Hib {
 
     private String description;
 
+    private String path;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public Folder() {
+    }
+
+    public Folder(String title, String description, Folder folder) {
+        this.title = title;
+        this.description = description;
+        this.parentFolder = folder;
     }
 
     public List<User> getModerators() {
@@ -43,6 +59,10 @@ public class Folder extends Hib {
 
     public Folder(String title) {
         this.title = title;
+    }
+    public Folder(String title, String description) {
+        this.title = title;
+        this.description = description;
     }
 
     public String getTitle() {

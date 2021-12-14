@@ -7,14 +7,16 @@ public class File extends Hib{
     private String name;
     private String path;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name="folder_id", referencedColumnName = "id")
     private Folder folder;
 
     public File() {
     }
 
-    public File(File file) {
+    public File(String name, Folder folder) {
+        this.name = name;
+        this.folder = folder;
     }
 
     public String getPath() {

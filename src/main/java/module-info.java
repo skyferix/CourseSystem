@@ -19,4 +19,7 @@ module com.example.coursesys {
     opens CourseWork.helpers to javafx.fxml;
     exports CourseWork.Tree;
     opens CourseWork.Tree to javafx.fxml;
+
+    exports CourseWork.fxControllers.popup to javafx.fxml;
+    opens CourseWork.fxControllers.popup to javafx.fxml;
 }

@@ -1,14 +1,12 @@
 package CourseWork.helpers;
 
 import CourseWork.fxControllers.Login;
-import CourseWork.hibernateControllers.CourseHibControl;
-import CourseWork.hibernateControllers.HibControl;
-import CourseWork.hibernateControllers.PersonHibControl;
-import CourseWork.hibernateControllers.UserHibControl;
+import CourseWork.hibernateControllers.*;
 import org.hibernate.bytecode.enhance.internal.tracker.SimpleCollectionTracker;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.prefs.Preferences;
@@ -20,6 +18,8 @@ public class conf {
     public static CourseHibControl courseHibControl = new CourseHibControl(entityManagerFactory);
     public static HibControl hibControl = new HibControl(entityManagerFactory);
     public static PersonHibControl personHibControl = new PersonHibControl(entityManagerFactory);
+    public static FolderHibControl folderHibControl = new FolderHibControl(entityManagerFactory);
+    public static FileHibControl fileHibControl = new FileHibControl(entityManagerFactory);
 
     //Session
     public static Preferences session = Preferences.userNodeForPackage(Login.class);
@@ -44,5 +44,7 @@ public class conf {
         }
         return null;
     }
+
+    public static java.io.File rootFolder = new java.io.File("src/main/public/courses");
 
 }

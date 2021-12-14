@@ -1,0 +1,2 @@
+src/main/public/*
+!src/main/public/.gitkeep
