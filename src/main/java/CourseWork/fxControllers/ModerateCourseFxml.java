@@ -15,11 +15,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -64,13 +67,33 @@ public class ModerateCourseFxml{
 
     private TreeItem<TreeNode> recursion(Folder parent){
         TreeNode parentNode = new FolderNode(parent);
-        TreeItem<TreeNode> parentTreeItem = new TreeItem<TreeNode>(parentNode);
+        String folderPath = conf.rootFolder.getPath() + "\\photo" + "\\folder.png";
+        String filePath = conf.rootFolder.getPath() + "\\photo" + "\\file.png";
+        TreeItem<TreeNode> parentTreeItem = null;
+        ImageView folderImg = null;
+        try {
+            folderImg = new ImageView(new Image(new FileInputStream(folderPath)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        folderImg.setFitHeight(16);
+        folderImg.setFitWidth(16);
+
+            parentTreeItem = new TreeItem<TreeNode>(parentNode,folderImg);
+
 
         List<File> files = parent.getFiles();
         List<TreeNode> fileNodes = files.stream().map(FileNode::new).collect(Collectors.toList());
-
+        ImageView fileImg = null;
+        try {
+            fileImg = new ImageView(new Image(new FileInputStream(filePath)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        fileImg.setFitHeight(16);
+        fileImg.setFitWidth(16);
         for(TreeNode node: fileNodes){
-            parentTreeItem.getChildren().add(new TreeItem<>(node));
+            parentTreeItem.getChildren().add(new TreeItem<>(node,fileImg));
         }
         for(Folder folder: parent.getSubFolders()){
             parentTreeItem.getChildren().add(recursion(folder));
