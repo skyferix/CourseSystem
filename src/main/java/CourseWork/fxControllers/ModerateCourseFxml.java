@@ -52,11 +52,13 @@ public class ModerateCourseFxml{
     @FXML
     public AnchorPane mainAnchor;
 
+    public Course mainCourse;
+
 
     public void getAllDone(Course course) {
+        mainCourse = course;
         Folder root = course.getMainFolder();
         TreeItem<TreeNode> treeRoot = recursion(root);
-
         treeView.setRoot(treeRoot);
     }
 
@@ -122,13 +124,30 @@ public class ModerateCourseFxml{
 
     public void selectItem(){
         TreeItem<TreeNode> node = treeView.getSelectionModel().getSelectedItem();
+        if(node == null){
+            return;
+        }
         nodeTitle.setText(node.getValue().getName());
         text1.setText("Entity: " + String.valueOf(node.getValue().getType()));
 
-
+        User user = conf.userHibControl.getUserById(conf.getUserId());
+        Boolean bool = false;
+        for(Course course: user.getModeratedCourses()){
+            if(course.getId() == mainCourse.getId()){
+                bool=true;
+                break;
+            }
+        }
+        if(user.getUserType() == UserType.Person){
+            if(mainCourse.getOwner().getId() == user.getId()){
+                bool=true;
+            }
+        }
         if(node.getValue().getType() == Type.Folder){
-            createFolder.setVisible(true);
-            createFile.setVisible(true);
+            if(bool) {
+                createFolder.setVisible(true);
+                createFile.setVisible(true);
+            }
             Folder folder = conf.folderHibControl.getFolderById(node.getValue().getId());
             text2.setText("Sub folders number: " + String.valueOf(folder.getSubFolders().size()));
             text3.setText("Files number: " + String.valueOf(folder.getFiles().size()));

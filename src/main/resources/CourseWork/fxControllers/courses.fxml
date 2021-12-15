@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<TabPane id="#tabpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="765.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CourseWork.fxControllers.Main">
+<TabPane id="#tabpane" fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="765.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CourseWork.fxControllers.Main">
   <tabs>
     <Tab text="Courses">
       <content>
@@ -33,6 +33,7 @@
                         <TextField fx:id="description" editable="false" layoutX="210.0" layoutY="78.0" prefHeight="186.0" prefWidth="251.0" />
                         <Button fx:id="participate" layoutX="213.0" layoutY="281.0" mnemonicParsing="false" onAction="#participate" text="Participate" visible="false" />
                         <Button fx:id="revokeParticipate" layoutX="186.0" layoutY="281.0" mnemonicParsing="false" onAction="#revokeParticipate" text="Revoke participation" visible="false" />
+                        <Button layoutX="56.0" layoutY="281.0" mnemonicParsing="false" onAction="#goModerate" text="View folders" />
                      </children>
                   </AnchorPane>
                   <Text layoutX="53.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Courses" textAlignment="CENTER" wrappingWidth="135.2940673828125">
@@ -62,7 +63,7 @@
                       <Text layoutX="299.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
                       <TextField fx:id="myDescription" editable="false" layoutX="210.0" layoutY="78.0" prefHeight="186.0" prefWidth="251.0" />
                         <Button fx:id="editCourse" layoutX="59.0" layoutY="197.0" mnemonicParsing="false" onAction="#goEdit" text="Edit Course" />
-                        <Button fx:id="editCourse2" layoutX="42.0" layoutY="238.0" mnemonicParsing="false" onAction="#goModerate" text="Moderate Folders" />
+                        <Button fx:id="editCourse2" layoutX="42.0" layoutY="238.0" mnemonicParsing="false" onAction="#goModerate1" text="Moderate Folders" />
                   </children>
               </AnchorPane>
               <Text layoutX="21.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My Courses" wrappingWidth="135.2940673828125">
@@ -75,25 +76,27 @@
           </children></AnchorPane>
       </content>
     </Tab>
-      <Tab fx:id="myCourseTab1" text="Moderated Courses">
+      <Tab fx:id="moderateCoursesTab" text="Moderated Courses">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="370.0" prefWidth="655.0">
                <children>
                   <ListView fx:id="myList1" layoutX="21.0" layoutY="63.0" prefHeight="281.0" prefWidth="206.0" />
-                  <AnchorPane fx:id="myCourseDetails1" layoutX="239.0" layoutY="21.0" prefHeight="328.0" prefWidth="499.0">
+                  <AnchorPane fx:id="myCourseDetails1" layoutX="239.0" layoutY="21.0" prefHeight="328.0" prefWidth="499.0" visible="false">
                      <children>
                         <Text fx:id="myTitle1" layoutX="180.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course name">
                            <font>
                               <Font size="17.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="myStartDate1" editable="false" layoutX="23.0" layoutY="78.0" />
-                        <Text layoutX="23.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" />
-                        <TextField fx:id="myEndDate1" editable="false" layoutX="23.0" layoutY="155.0" />
-                        <Text layoutX="23.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date" />
+                        <TextField fx:id="myStartDate1" editable="false" layoutX="23.0" layoutY="146.0" />
+                        <Text layoutX="23.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" />
+                        <TextField fx:id="myEndDate1" editable="false" layoutX="23.0" layoutY="223.0" />
+                        <Text layoutX="23.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date" />
                         <Text layoutX="299.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
                         <TextField fx:id="myDescription1" editable="false" layoutX="210.0" layoutY="78.0" prefHeight="186.0" prefWidth="251.0" />
-                        <Button fx:id="editCourse1" layoutX="43.0" layoutY="197.0" mnemonicParsing="false" onAction="#goModerate1" text="Moderate folders" />
+                        <Button fx:id="editCourse1" layoutX="43.0" layoutY="268.0" mnemonicParsing="false" onAction="#goModerate2" text="Moderate folders" />
+                        <TextField fx:id="creator1" editable="false" layoutX="22.0" layoutY="79.0" />
+                        <Text layoutX="22.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creator" />
                      </children>
                   </AnchorPane>
                   <Text layoutX="21.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Moderate Courses" wrappingWidth="201.00836181640625">
@@ -101,38 +104,6 @@
                         <Font size="21.0" />
                      </font>
                   </Text>
-                  <Button layoutX="670.0" layoutY="26.0" mnemonicParsing="false" onAction="#logOut" text="Log out" />
-               </children>
-            </AnchorPane>
-         </content>
-      </Tab>
-      <Tab fx:id="myCourseTab11" text="Moderated Courses">
-         <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="370.0" prefWidth="655.0">
-               <children>
-                  <ListView fx:id="myList11" layoutX="21.0" layoutY="63.0" prefHeight="281.0" prefWidth="206.0" />
-                  <AnchorPane fx:id="myCourseDetails11" layoutX="239.0" layoutY="21.0" prefHeight="328.0" prefWidth="499.0">
-                     <children>
-                        <Text fx:id="myTitle11" layoutX="180.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course name">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Text>
-                        <TextField fx:id="myStartDate11" editable="false" layoutX="23.0" layoutY="78.0" />
-                        <Text layoutX="23.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" />
-                        <TextField fx:id="myEndDate11" editable="false" layoutX="23.0" layoutY="155.0" />
-                        <Text layoutX="23.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date" />
-                        <Text layoutX="299.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
-                        <TextField fx:id="myDescription11" editable="false" layoutX="210.0" layoutY="78.0" prefHeight="186.0" prefWidth="251.0" />
-                        <Button fx:id="editCourse111" layoutX="46.0" layoutY="199.0" mnemonicParsing="false" onAction="#goEdit" text="Manage Folders" />
-                     </children>
-                  </AnchorPane>
-                  <Text layoutX="21.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Moderated" wrappingWidth="135.2940673828125">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </Text>
-                  <Button fx:id="addCourse11" layoutX="148.0" layoutY="16.0" mnemonicParsing="false" onAction="#createCourse" text="Add Course" />
                   <Button layoutX="670.0" layoutY="26.0" mnemonicParsing="false" onAction="#logOut" text="Log out" />
                </children>
             </AnchorPane>

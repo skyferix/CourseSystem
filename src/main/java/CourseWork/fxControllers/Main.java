@@ -38,6 +38,11 @@ import java.util.ResourceBundle;
 public class Main implements Initializable {
 //    public ListView courseList;
 //    public TreeView courseFolderTree;
+    @FXML
+    public TabPane tabPane;
+
+    @FXML
+    public Tab moderateCoursesTab;
 
     @FXML
     public Text title;
@@ -82,6 +87,8 @@ public class Main implements Initializable {
     @FXML
     public Text myTitle1;
     @FXML
+    public TextField creator1;
+    @FXML
     public TextField myStartDate1;
     @FXML
     public TextField myEndDate1;
@@ -94,15 +101,21 @@ public class Main implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if(conf.userHibControl.getUserType(conf.getUserId())==UserType.Admin){
+        User user = conf.userHibControl.getUserById(conf.getUserId());
+        if(user.getUserType()==UserType.Admin){
             adminTab.setDisable(false);
         } else{
             adminTab.setDisable(true);
         }
-        if(conf.userHibControl.getUserType(conf.getUserId())==UserType.Person){
+        if(user.getUserType()==UserType.Person){
             myCourseTab.setDisable(false);
         } else{
             myCourseTab.setDisable(true);
+        }
+        if(user.getModeratedCourses().size()>0){
+            moderateCoursesTab.setDisable(false);
+        } else{
+            moderateCoursesTab.setDisable(true);
         }
         List<Course> courses = conf.courseHibControl.getAllCourses();
         list.getItems().addAll(getCourseNames(courses));
@@ -166,6 +179,7 @@ public class Main implements Initializable {
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
                 String currentItem = myList1.getSelectionModel().getSelectedItem();
                 Course course = conf.courseHibControl.getCourseByTitle(currentItem);
+                creator1.setText(course.getOwner().getName());
                 myTitle1.setText(course.getTitle());
                 myStartDate1.setText(course.getStartDate().toString());
                 myEndDate1.setText(course.getEndDate().toString());
@@ -258,29 +272,24 @@ public class Main implements Initializable {
     }
 
     public void goModerate(ActionEvent event){
-        Parent root = null;
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        String currentItem = myList.getSelectionModel().getSelectedItem();
-        Course course = conf.courseHibControl.getCourseByTitle(currentItem);
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("moderate-course.fxml"));
-            root = loader.load();
-            ModerateCourseFxml editCourse = loader.getController();
-            editCourse.getAllDone(course);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String currentItem = list.getSelectionModel().getSelectedItem();
+        this.goToModerateWindow(currentItem, event);
     }
 
     public void goModerate1(ActionEvent event){
-        Parent root = null;
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        String currentItem = myList.getSelectionModel().getSelectedItem();
+        this.goToModerateWindow(currentItem, event);
+    }
+
+    public void goModerate2(ActionEvent event){
         String currentItem = myList1.getSelectionModel().getSelectedItem();
+        this.goToModerateWindow(currentItem, event);
+    }
+
+    private void goToModerateWindow(String currentItem, ActionEvent event){
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Course course = conf.courseHibControl.getCourseByTitle(currentItem);
+        Parent root = null;
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("moderate-course.fxml"));

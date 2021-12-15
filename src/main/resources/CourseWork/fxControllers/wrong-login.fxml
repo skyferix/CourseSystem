@@ -12,10 +12,11 @@
         <Label layoutX="51.0" layoutY="186.0" text="Password" />
         <TextField fx:id="username" layoutX="51.0" layoutY="136.0" />
         <TextField fx:id="password" layoutX="51.0" layoutY="222.0" />
-        <Button layoutX="99.0" layoutY="274.0" mnemonicParsing="false" onAction="#submit" text="Login" />
+        <Button layoutX="153.0" layoutY="274.0" mnemonicParsing="false" onAction="#submit" text="Login" />
         <Text layoutX="5.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
         <Text fill="RED" layoutX="47.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login or password is incorect" />
         <Text fill="RED" layoutX="83.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="please try again" />
+      <Button layoutX="50.0" layoutY="274.0" mnemonicParsing="false" onAction="#goBack" text="Return" />
 
     </children>
 </AnchorPane>
